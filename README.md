@@ -32,11 +32,11 @@ Table: dotnet-webook-gh
     </td>
   </tr>
   <tr>
-    <td>Account#{Username}#Repository#{Owner}#{Name}#{Event}</td>
-    <td>Event#{Name}#{Ulid}</td>
+    <td>Account#{Username}#Repository#{Owner}#{Name}#{Issues}</td>
+    <td>Issue#{Id}</td>
     <td>
-      <a href="src/DotnetWebhookGH.Data/DynamoDB/DataModel/Events/Event.cs">
-        Event.cs
+      <a href="src/DotnetWebhookGH.Data/DynamoDB/DataModel/Issues/Issue.cs">
+        Issue.cs
       </a>
     </td>
   </tr>
