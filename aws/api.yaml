@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Transform: AWS::Serverless-2016-10-31
+
+Description: DotnetWebhookGH - API
+
+Mappings:
+
+  Configuration:
+    API:
+      Version: v1
+
+Globals:
+
+  Api:
+    OpenApiVersion: 3.0.1
+
+Resources:
+
+  Lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: dotnet-webhook-gh-api
+      Handler: DotnetWebhookGH.Api
+      Runtime: dotnet6
+      MemorySize: 1024
+      Timeout: 30
+      Environment:
+        Variables:
+          ASPNETCORE_ENVIRONMENT: Production
+          ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS: true
+          ASPNETCORE_Logging__IncludeLogLevel: true
+          ASPNETCORE_Logging__IncludeCategory: true
+          ASPNETCORE_Logging__IncludeNewline: true
+          ASPNETCORE_Logging__IncludeException: true
+          ASPNETCORE_Logging__IncludeEventId: false
+          ASPNETCORE_Logging__IncludeScopes: false
+          ASPNETCORE_Logging__LogLevel__Default: Error
+          ASPNETCORE_Logging__LogLevel__Microsoft: Error
+          ASPNETCORE_Logging__LogLevel__System: Error
+          ASPNETCORE_API__Version: !FindInMap [ Configuration, API, Version ]
+      Events:
+        HttpDocsRootPath:
+          Type: Api
+          Properties:
+            Path: /docs
+            Method: ANY
+            RestApiId: !Ref ApiGateway
+        HttpDocsPath:
+          Type: Api
+          Properties:
+            Path: /docs/{proxy+}
+            Method: ANY
+            RestApiId: !Ref ApiGateway
+        HttpAnyPath:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+            RestApiId: !Ref ApiGateway
+      Role: !Sub arn:aws:iam::${AWS::AccountId}:role/AppLambdaExecutionRole
+      Tags:
+        Name: dotnet-webhook-gh:Lambda
+        Product: DotnetWebhookGH
+
+  ApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: dotnet-webhook-gh-api
+      StageName: !FindInMap [ Configuration, API, Version ]
+      Auth:
+        UsagePlan:
+          CreateUsagePlan: PER_API
+          Quota:
+            Limit: 1000000
+            Period: MONTH
+          Throttle:
+            BurstLimit: 100
+            RateLimit: 50
+          Tags:
+            - Key: Name
+              Value: dotnet-webhook-gh-api:UsagePlan
+      Tags:
+        Name: dotnet-webhook-gh-api:ApiGateway
+        Product: DotnetWebhookGH
