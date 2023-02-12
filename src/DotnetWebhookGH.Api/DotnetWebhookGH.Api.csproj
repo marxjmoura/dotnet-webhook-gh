@@ -14,7 +14,6 @@
     <PackageReference Include="AWSSDK.Core" Version="3.7.105.1" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.101.43" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.3" />
-    <PackageReference Include="NUlid" Version="1.7.1" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings*.json" CopyToPublishDirectory="Never" />
