@@ -2,8 +2,17 @@
 
 .NET Core webhook to listen for GitHub events.
 
-## DynamoDB - Data modeling
+## How to
 
+How to run the API locally:
+
+`dotnet run --project src/DotnetWebhookGH.Api`
+
+How to run the automated tests:
+
+`dotnet test src`
+
+## DynamoDB - Data modeling
 
 Table: dotnet-webook-gh
 
@@ -14,29 +23,11 @@ Table: dotnet-webook-gh
     <th>Attributes</th>
   <tr>
   <tr>
-    <td>Account#{Username}</td>
-    <td>User#{Username}</td>
+    <td>{repo_full_name}/issues</td>
+    <td>#{issue_number} {updated_at}</td>
     <td>
-      <a href="src/DotnetWebhookGH.Data/DynamoDB/DataModel/Users/User.cs">
-        User.cs
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td>Account#{Username}#Repositories</td>
-    <td>Repository#{Owner}#{Name}</td>
-    <td>
-      <a href="src/DotnetWebhookGH.Data/DynamoDB/DataModel/Repositories/Repository.cs">
-        Repository.cs
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td>Account#{Username}#Repository#{Owner}#{Name}#{Issues}</td>
-    <td>Issue#{Id}</td>
-    <td>
-      <a href="src/DotnetWebhookGH.Data/DynamoDB/DataModel/Issues/Issue.cs">
-        Issue.cs
+      <a href="https://docs.github.com/en/rest/issues">
+        issue
       </a>
     </td>
   </tr>
