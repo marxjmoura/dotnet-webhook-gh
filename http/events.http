@@ -1,2 +1,2 @@
 GET http://localhost:5000/marxjmoura/dotnet-webhook-gh/issues/1/events
-Content-Type: application/application/json
+Content-Type: application/json
