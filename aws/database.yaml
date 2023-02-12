@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Transform: AWS::Serverless-2016-10-31
+
+Description: DotnetWebhookGH - Database
+
+Resources:
+
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: dotnet-webhook-gh
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      Tags:
+        - Key: Name
+          Value: dotnet-webhook-gh:DynamoDB
+        - Key: Product
+          Value: DotnetWebhookGH
