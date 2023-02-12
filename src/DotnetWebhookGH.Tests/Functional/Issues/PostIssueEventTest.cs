@@ -1,4 +1,4 @@
-namespace DotnetWebhookGH.Tests.Functional;
+namespace DotnetWebhookGH.Tests.Functional.Issues;
 
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
@@ -31,7 +31,7 @@ public class PostIssueEventTest
         await dynamoDB.PutItemAsync(DynamoDBTable.Name,
             Arg.Do<Dictionary<string, AttributeValue>>(item => savedItem = item));
 
-        var fixture = Path.Combine(AppContext.BaseDirectory, "Fixtures/issue.json");
+        var fixture = Path.Combine(AppContext.BaseDirectory, "Fixtures/Issue.json");
         var requestJson = await File.ReadAllTextAsync(fixture);
         var request = new StringContent(requestJson, Encoding.UTF8, MediaTypeNames.Application.Json);
         var response = await client.PostAsync("/webhook", request);
