@@ -25,6 +25,6 @@ public static class TestProgram
                 api.UseEndpoints(endpoints => endpoints.MapControllers());
             });
 
-        return new TestServer(host);
+        return new(host);
     }
 }

@@ -26,9 +26,13 @@ Table: dotnet-webook-gh
     <td>{repo_full_name}/issues</td>
     <td>#{issue_number} {updated_at}</td>
     <td>
-      <a href="https://docs.github.com/en/rest/issues">
-        issue
-      </a>
+     {
+        PK,
+        SK,
+        <a href="https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues">
+          event
+        </a>
+      }
     </td>
   </tr>
 </table>

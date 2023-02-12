@@ -18,7 +18,7 @@ using Xunit;
 public class PostIssueEventTest
 {
     [Fact]
-    public async Task PostIssues_ShouldSaveToDatabaseAndReturn204()
+    public async Task ShouldSaveToDatabaseAndReturn204()
     {
         var server = TestProgram.CreateServer();
         var client = server.CreateClient();
@@ -39,6 +39,6 @@ public class PostIssueEventTest
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal("marxjmoura/dotnet-webhook-gh/issues", savedItem?[DynamoDBTable.PK].S);
         Assert.Equal("#1 2023-02-11T16:22:42Z", savedItem?[DynamoDBTable.SK].S);
-        Assert.Equal("1580911028", savedItem?["id"].N);
+        Assert.Equal("1580911028", savedItem?["payload"].M["issue"].M["id"].N);
     }
 }

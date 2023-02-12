@@ -4,21 +4,17 @@ using Amazon.DynamoDBv2;
 using DotnetWebhookGH.Api.Data.DynamoDB;
 using DotnetWebhookGH.Api.Data.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Text.Json.Nodes;
 
 [Route("webhook")]
 public class WebhookController : Controller
 {
     private readonly IAmazonDynamoDB _dynamoDB;
-    private readonly Dictionary<string, IModel> _modelMap;
 
     public WebhookController(IAmazonDynamoDB dynamoDB)
     {
         _dynamoDB = dynamoDB;
-        _modelMap = new()
-        {
-            ["issues"] = new Issue()
-        };
     }
 
     [HttpPost]
@@ -26,13 +22,15 @@ public class WebhookController : Controller
     {
         var @event = Request.Headers["X-GitHub-Event"];
 
-        if (_modelMap.ContainsKey(@event))
+        if (@event != "issues")
         {
-            var model = _modelMap[@event];
-            var item = model.ToDynamoDBItem(json);
-
-            await _dynamoDB.PutItemAsync(DynamoDBTable.Name, item);
+            return StatusCode((int)HttpStatusCode.NotImplemented);
         }
+
+        var item = new DynamoDBItem(json);
+        var attributeMap = item.ToAttributeMap(@event);
+
+        await _dynamoDB.PutItemAsync(DynamoDBTable.Name, attributeMap);
 
         return NoContent();
     }
