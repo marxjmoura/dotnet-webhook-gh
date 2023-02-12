@@ -22,6 +22,11 @@ public class WebhookController : Controller
     {
         var @event = Request.Headers["X-GitHub-Event"];
 
+        if (@event == "ping")
+        {
+            return Ok("pong");
+        }
+
         if (@event != "issues")
         {
             return StatusCode((int)HttpStatusCode.NotImplemented);
