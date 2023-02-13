@@ -22,7 +22,7 @@ public class GetIssueEventTest
         var server = TestProgram.CreateServer();
         var client = server.CreateClient();
 
-        var fixture = Path.Combine(AppContext.BaseDirectory, "Fixtures/issue.json");
+        var fixture = Path.Combine(AppContext.BaseDirectory, "Fixtures/Issue.json");
         var fixtureJson = await File.ReadAllTextAsync(fixture);
 
         var dynamoDBItemJson = JsonSerializer.Serialize(new
