@@ -42,7 +42,7 @@ public class WebhookController : Controller
 
         if (@event == "ping")
         {
-            return Ok("pong");
+            return Content("pong");
         }
 
         if (@event != "issues")
