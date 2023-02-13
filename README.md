@@ -62,7 +62,7 @@ Table: dotnet-webook-gh
   <tr>
   <tr>
     <td>{repo_full_name}/issues</td>
-    <td>#{issue_number} {updated_at}</td>
+    <td>#{issue_number} {updated_at} {delivery}</td>
     <td>
      {
         PK,

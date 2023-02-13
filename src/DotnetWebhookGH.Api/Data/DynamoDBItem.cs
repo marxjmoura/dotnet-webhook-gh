@@ -14,7 +14,7 @@ public class DynamoDBItem
         _json = json;
     }
 
-    public Dictionary<string, AttributeValue> ToAttributeMap(string @event)
+    public Dictionary<string, AttributeValue> ToAttributeMap(string @event, string delivery)
     {
         var repository = _json["repository"]!["full_name"]!.GetValue<string>();
         var number = _json["issue"]!["number"]!.GetValue<int>();
@@ -22,7 +22,7 @@ public class DynamoDBItem
 
         var attributes = JsonNode.Parse("{}")!;
         attributes[DynamoDBTable.PK] = $"{repository}/{@event}";
-        attributes[DynamoDBTable.SK] = $"#{number} {updatedAt}";
+        attributes[DynamoDBTable.SK] = $"#{number} {updatedAt} {delivery}";
         attributes["payload"] = _json;
 
         return Document.FromJson(attributes.ToJsonString()).ToAttributeMap();

@@ -24,6 +24,7 @@ public class PostIssueEventTest
         var client = server.CreateClient();
 
         client.DefaultRequestHeaders.Add("X-GitHub-Event", "issues");
+        client.DefaultRequestHeaders.Add("X-GitHub-Delivery", "87ecca00-aa63-11ed-9647-af96ab45e150");
 
         var dynamoDB = server.Services.GetService<IAmazonDynamoDB>()!;
         var savedItem = null as Dictionary<string, AttributeValue>;
@@ -38,7 +39,7 @@ public class PostIssueEventTest
 
         Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
         Assert.Equal("marxjmoura/dotnet-webhook-gh/issues", savedItem?[DynamoDBTable.PK].S);
-        Assert.Equal("#1 2023-02-11T16:22:42Z", savedItem?[DynamoDBTable.SK].S);
+        Assert.Equal("#1 2023-02-11T16:22:42Z 87ecca00-aa63-11ed-9647-af96ab45e150", savedItem?[DynamoDBTable.SK].S);
         Assert.Equal("1580911028", savedItem?["payload"].M["issue"].M["id"].N);
     }
 }

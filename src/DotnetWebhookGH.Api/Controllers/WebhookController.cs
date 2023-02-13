@@ -39,6 +39,7 @@ public class WebhookController : Controller
     public async Task<IActionResult> Save([FromBody] JsonNode payload)
     {
         var @event = Request.Headers["X-GitHub-Event"];
+        var delivery = Request.Headers["X-GitHub-Delivery"];
 
         if (@event == "ping")
         {
@@ -51,7 +52,7 @@ public class WebhookController : Controller
         }
 
         var item = new DynamoDBItem(payload);
-        var attributeMap = item.ToAttributeMap(@event);
+        var attributeMap = item.ToAttributeMap(@event, delivery);
 
         await _dynamoDB.PutItemAsync(DynamoDBTable.Name, attributeMap);
 
