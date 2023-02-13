@@ -81,7 +81,7 @@ Table: dotnet-webook-gh
         PK,
         SK,
         <a href="https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues">
-          event_payload
+          payload
         </a>
       }
     </td>
