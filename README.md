@@ -63,7 +63,7 @@ the [AWS CLI](https://aws.amazon.com/cli/) installed and configured on your comp
 
 _[click on the image to enlarge]_
 
-## DynamoDB - Data modeling
+## Data modeling - DynamoDB
 
 Table: dotnet-webook-gh
 
