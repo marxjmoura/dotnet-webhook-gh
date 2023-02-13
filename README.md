@@ -1,6 +1,9 @@
-# dotnet-webhook-gh
+# .NET Webhook for GitHub
 
 .NET Core webhook to listen for GitHub events.
+
+[![CircleCI](https://circleci.com/gh/marxjmoura/dotnet-webhook-gh/tree/master.svg?style=shield)](https://circleci.com/gh/marxjmoura/dotnet-webhook-gh/tree/master)
+[![codecov](https://codecov.io/gh/marxjmoura/dotnet-webhook-gh/branch/master/graph/badge.svg)](https://codecov.io/gh/marxjmoura/dotnet-webhook-gh)
 
 ## How to
 
@@ -65,7 +68,7 @@ Table: dotnet-webook-gh
         PK,
         SK,
         <a href="https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues">
-          event
+          event_payload
         </a>
       }
     </td>
