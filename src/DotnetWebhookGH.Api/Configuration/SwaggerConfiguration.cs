@@ -2,9 +2,11 @@ namespace DotnetWebhookGH.Api.Configuration;
 
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text.Json.Nodes;
 
+[ExcludeFromCodeCoverage]
 public static class SwaggerConfiguration
 {
     static string Title = ".NET Webhook for GitHub";
