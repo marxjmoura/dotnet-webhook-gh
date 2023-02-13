@@ -55,6 +55,14 @@ the [AWS CLI](https://aws.amazon.com/cli/) installed and configured on your comp
 
 3. Run the tool `tools/deploy-api.sh` to deploy the API.
 
+## Architecture
+
+<a href="https://raw.githubusercontent.com/marxjmoura/dotnet-webhook-gh/main/diagrams/architecture.svg">
+  <img src="https://raw.githubusercontent.com/marxjmoura/dotnet-webhook-gh/main/diagrams/architecture.svg" alt="Architecture diagram" width="320">
+</a>
+
+_[click on the image to enlarge]_
+
 ## DynamoDB - Data modeling
 
 Table: dotnet-webook-gh
