@@ -19,7 +19,7 @@ commands:
 executors:
   ubuntu:
     machine:
-      image: circleci/classic:latest
+      image: ubuntu-2004:202201-02
 
 jobs:
   build_api:
