@@ -37,6 +37,7 @@ jobs:
           path: ~/project
       - run: sudo sysctl -n -w fs.inotify.max_user_instances=512
       - run: ./tools/dotnet-install.sh << parameters.dotnet_version >>
+      - run: dotnet tool install --local dotnet-reportgenerator-globaltool --version 5.1.17
       - run: ./tools/code-test.sh
       - codecov:
           file: << parameters.api_tests_dir >>/coverage/opencover.xml
