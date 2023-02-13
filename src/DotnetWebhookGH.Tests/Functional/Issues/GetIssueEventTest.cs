@@ -45,9 +45,9 @@ public class GetIssueEventTest
         var responseJson = responseJsonArray.SingleOrDefault();
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Equal(1, responseJsonArray.Length);
         Assert.Equal("opened", responseJson?["action"]?.GetValue<string>());
         Assert.Equal(1, responseJson?["issue"]?["number"]?.GetValue<int>());
         Assert.Equal("The challenge has begun!", responseJson?["issue"]?["title"]?.GetValue<string>());
+        Assert.Single(responseJsonArray);
     }
 }
