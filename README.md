@@ -42,9 +42,14 @@ Have fun!
 
 ### How to deploy:
 
-It's important you have some knowledge about these AWS services: CloudFormation, DynamoDB, API Gateway, Lambda.
+It's important you have some knowledge about these AWS services:
+[CloudFormation](https://aws.amazon.com/cloudformation/),
+[DynamoDB](https://aws.amazon.com/dynamodb/),
+[API Gateway](https://aws.amazon.com/api-gateway/),
+[Lambda](https://aws.amazon.com/lambda/).
 
-1. You need an AWS account and the AWS CLI installed and configured on your computer.
+1. You need an [AWS account](https://aws.amazon.com/account/) and
+the [AWS CLI](https://aws.amazon.com/cli/) installed and configured on your computer.
 
 2. Run the tool `tools/deploy-database.sh` to create the DynamoDB table.
 
