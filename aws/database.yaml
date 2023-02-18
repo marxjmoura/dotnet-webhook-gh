@@ -2,28 +2,29 @@ AWSTemplateFormatVersion: 2010-09-09
 
 Transform: AWS::Serverless-2016-10-31
 
-Description: DotnetWebhookGH - Database
+Description: DotnetWebhookGH - PostgreSQL
 
 Resources:
 
-  DynamoDBTable:
-    Type: AWS::DynamoDB::Table
+  PostgreSQLInstance:
+    Type: AWS::RDS::DBInstance
     DeletionPolicy: Retain
     Properties:
-      TableName: dotnet-webhook-gh
-      KeySchema:
-        - AttributeName: PK
-          KeyType: HASH
-        - AttributeName: SK
-          KeyType: RANGE
-      AttributeDefinitions:
-        - AttributeName: PK
-          AttributeType: S
-        - AttributeName: SK
-          AttributeType: S
-      BillingMode: PAY_PER_REQUEST
+      DBInstanceIdentifier: dotnet-webhook-gh
+      MasterUsername: '{{resolve:secretsmanager:dotnet-webhook-gh/PostgreSQL:SecretString:Username}}'
+      MasterUserPassword: '{{resolve:secretsmanager:dotnet-webhook-gh/PostgreSQL:SecretString:Password}}'
+      Engine: postgres
+      EngineVersion: '14.6'
+      PubliclyAccessible: true
+      DBInstanceClass: db.t4g.micro
+      AllocatedStorage: 20
+      StorageType: gp2
+      VPCSecurityGroups:
+        - sg-013192d48972caa5f
       Tags:
-        - Key: Name
-          Value: dotnet-webhook-gh:DynamoDB
-        - Key: Product
+        - Key: app:component
+          Value: PostgreSQL
+        - Key: app:product
           Value: DotnetWebhookGH
+        - Key: app:source
+          Value: https://github.com/marxjmoura/dotnet-webhook-gh
