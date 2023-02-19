@@ -1,13 +1,19 @@
-using Amazon.DynamoDBv2;
+using Amazon.SecretsManager;
 using DotnetWebhookGH.Api.Configuration;
+using DotnetWebhookGH.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.RestApi);
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-builder.Services.AddAWSService<IAmazonDynamoDB>();
 
-builder.Services.AddControllers();
+builder.Services.AddAWSService<IAmazonSecretsManager>();
+builder.Services.AddDbContextFactory<ApiDbContext, ApiDbContextFactory>();
+
+builder.Services
+    .AddControllers(options => options.AddApiFilters())
+    .AddJsonOptions(options => options.AddApiJsonSerializerOptions());
+
 builder.Services.AddLogging();
 builder.Services.AddApiDocumentation();
 

@@ -1,21 +1,22 @@
 namespace DotnetWebhookGH.Api.Controllers;
 
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DocumentModel;
-using DotnetWebhookGH.Api.Data.DynamoDB;
+using DotnetWebhookGH.Api.Data;
+using DotnetWebhookGH.Api.Data.Model.Users;
 using DotnetWebhookGH.Api.Payloads;
+using DotnetWebhookGH.Api.Payloads.Events;
+using DotnetWebhookGH.Api.Payloads.Issues;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Mime;
-using System.Text.Json.Nodes;
 
 [Route("{owner}/{repo}/issues/{number:int}/events")]
 public class EventsController : Controller
 {
-    private readonly IAmazonDynamoDB _dynamoDB;
+    private readonly IDbContextFactory<ApiDbContext> _dbContextFactory;
 
-    public EventsController(IAmazonDynamoDB dynamoDB)
+    public EventsController(IDbContextFactory<ApiDbContext> dbContextFactory)
     {
-        _dynamoDB = dynamoDB;
+        _dbContextFactory = dbContextFactory;
     }
 
     /// <summary>
@@ -33,22 +34,23 @@ public class EventsController : Controller
     /// </returns>
     [HttpGet]
     [Produces(MediaTypeNames.Application.Json)]
-    [ProducesResponseType(typeof(JsonArray), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IssueJson[]), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Search([FromRoute] EventRouteParams routeParams)
     {
-        var response = await _dynamoDB.QueryAsync(new()
-        {
-            TableName = DynamoDBTable.Name,
-            KeyConditions = routeParams.ToKeyConditions()
-        });
+        using var dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        var events = response.Items
-            .Select(item => Document.FromAttributeMap(item))
-            .Select(document => JsonNode.Parse(document.ToJson()))
-            .Select(@event => JsonNode.Parse(@event!["payload"]!.ToJsonString()) )
-            .ToArray();
+        var events = await dbContext.Issues
+            .WhereNumber(routeParams.Number)
+            .WhereRepositoryNameEqual(routeParams.Repo!)
+            .WhereRepositoryOwnerEqual(routeParams.Owner!)
+            .IncludeRepository()
+            .IncludeSender()
+            .IncludeAssignees()
+            .IncludeReactions()
+            .IncludeLabels()
+            .ToListAsync();
 
-        return Ok(new JsonArray(events));
+        return Ok(events.Select(@event => @event.ToJson()).ToList());
     }
 }

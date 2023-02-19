@@ -1,11 +1,17 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
+using Amazon.SecretsManager;
+using DotnetWebhookGH.Api.Configuration;
+using DotnetWebhookGH.Api.Data;
+using DotnetWebhookGH.Api.Filters;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Reflection;
 using NSubstitute;
-using Amazon.DynamoDBv2;
+using System;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 public static class TestProgram
 {
@@ -16,8 +22,20 @@ public static class TestProgram
             .ConfigureServices(services =>
             {
                 services.AddLogging();
-                services.AddControllers().AddApplicationPart(Assembly.Load("DotnetWebhookGH.Api"));
-                services.AddSingleton(Substitute.For<IAmazonDynamoDB>());
+
+                services
+                    .AddControllers(options => options.AddApiFilters())
+                    .AddJsonOptions(options => options.AddApiJsonSerializerOptions())
+                    .AddApplicationPart(Assembly.Load("DotnetWebhookGH.Api"));
+
+                services.AddDbContextFactory<ApiDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                });
+
+                services.AddSingleton<ApiDbContext>();
+
+                services.AddSingleton(Substitute.For<IAmazonSecretsManager>());
             })
             .Configure(api =>
             {

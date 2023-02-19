@@ -22,7 +22,7 @@ public class PingEventTest
         var fixture = Path.Combine(AppContext.BaseDirectory, "Fixtures/Ping.json");
         var requestJson = await File.ReadAllTextAsync(fixture);
         var request = new StringContent(requestJson, Encoding.UTF8, MediaTypeNames.Application.Json);
-        var response = await client.PostAsync("/webhook", request);
+        var response = await client.PostAsync("/webhook/issues", request);
         var responseContent = await response.Content.ReadAsStringAsync();
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);

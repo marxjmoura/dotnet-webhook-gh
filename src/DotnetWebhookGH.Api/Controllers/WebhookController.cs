@@ -1,21 +1,20 @@
 namespace DotnetWebhookGH.Api.Controllers;
 
-using Amazon.DynamoDBv2;
-using DotnetWebhookGH.Api.Data.DynamoDB;
-using DotnetWebhookGH.Api.Data.Model;
+using DotnetWebhookGH.Api.Data;
+using DotnetWebhookGH.Api.Features;
+using DotnetWebhookGH.Api.Payloads.Events;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using Microsoft.EntityFrameworkCore;
 using System.Net.Mime;
-using System.Text.Json.Nodes;
 
-[Route("webhook")]
+[Route("webhook/issues")]
 public class WebhookController : Controller
 {
-    private readonly IAmazonDynamoDB _dynamoDB;
+    private readonly IDbContextFactory<ApiDbContext> _dbContextFactory;
 
-    public WebhookController(IAmazonDynamoDB dynamoDB)
+    public WebhookController(IDbContextFactory<ApiDbContext> dbContextFactory)
     {
-        _dynamoDB = dynamoDB;
+        _dbContextFactory = dbContextFactory;
     }
 
     /// <summary>
@@ -36,25 +35,15 @@ public class WebhookController : Controller
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Save([FromBody] JsonNode payload)
+    public async Task<IActionResult> Save([FromBody] EventJson payload)
     {
         var @event = Request.Headers["X-GitHub-Event"];
         var delivery = Request.Headers["X-GitHub-Delivery"];
 
-        if (@event == "ping")
-        {
-            return Content("pong");
-        }
+        using var dbContext = await _dbContextFactory.CreateDbContextAsync();
 
-        if (@event != "issues")
-        {
-            return StatusCode((int)HttpStatusCode.NotImplemented);
-        }
-
-        var item = new DynamoDBItem(payload);
-        var attributeMap = item.ToAttributeMap(@event, delivery);
-
-        await _dynamoDB.PutItemAsync(DynamoDBTable.Name, attributeMap);
+        var snapshot = new IssueSnapshot(dbContext);
+        await snapshot.SaveAsync(delivery, payload);
 
         return NoContent();
     }
