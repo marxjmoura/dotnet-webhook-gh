@@ -1,7 +1,7 @@
+namespace DotnetWebhookGH.Api.Data.Model.Users;
+
 using DotnetWebhookGH.Api.Data.Model.Issues;
 using Microsoft.EntityFrameworkCore;
-
-namespace DotnetWebhookGH.Api.Data.Model.Users;
 
 public static class IssueDBQuery
 {

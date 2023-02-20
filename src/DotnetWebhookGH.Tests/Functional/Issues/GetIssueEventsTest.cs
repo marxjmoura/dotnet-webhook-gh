@@ -45,12 +45,12 @@ public class GetIssueEventsTest
         var options = new JsonSerializerOptions();
         options.Converters.Add(new JsonStringEnumConverter());
 
-        var issue = new Issue { Delivery = Guid.NewGuid().ToString() };
+        var existentIssue = new Issue { Delivery = Guid.NewGuid().ToString() };
         var payload = JsonSerializer.Deserialize<EventJson>(fixtureJson, options)!;
-        payload.Map(issue, Enumerable.Empty<User>());
+        payload.Map(existentIssue, knownUsers: Enumerable.Empty<User>());
 
         var dbContext = server.Services.GetService<ApiDbContext>()!;
-        dbContext.Issues.Add(issue);
+        dbContext.Issues.Add(existentIssue);
         dbContext.SaveChanges();
 
         var response = await client.GetAsync("/marxjmoura/dotnet-webhook-gh/issues/1/events");

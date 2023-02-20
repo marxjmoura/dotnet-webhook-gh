@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace DotnetWebhookGH.Api.Data.Model.Repositories;
 
 public static class RepositoryDBQuery

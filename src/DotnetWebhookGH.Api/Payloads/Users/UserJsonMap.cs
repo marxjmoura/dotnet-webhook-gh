@@ -1,6 +1,6 @@
-using DotnetWebhookGH.Api.Data.Model.Users;
-
 namespace DotnetWebhookGH.Api.Payloads.Users;
+
+using DotnetWebhookGH.Api.Data.Model.Users;
 
 public static class UserJsonMap
 {

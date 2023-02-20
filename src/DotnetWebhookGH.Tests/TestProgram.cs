@@ -1,7 +1,6 @@
 using Amazon.SecretsManager;
 using DotnetWebhookGH.Api.Configuration;
 using DotnetWebhookGH.Api.Data;
-using DotnetWebhookGH.Api.Filters;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -11,7 +10,6 @@ using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using System;
 using System.Reflection;
-using System.Text.Json.Serialization;
 
 public static class TestProgram
 {

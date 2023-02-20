@@ -1,7 +1,7 @@
+namespace DotnetWebhookGH.Api.Data.Model.Users;
+
 using DotnetWebhookGH.Api.Data.Model.Issues;
 using DotnetWebhookGH.Api.Data.Model.Repositories;
-
-namespace DotnetWebhookGH.Api.Data.Model.Users;
 
 public class User
 {
