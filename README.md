@@ -22,7 +22,7 @@ Prerequisite: Download and install [.NET 6](https://dotnet.microsoft.com/en-us/d
 `tools/code-test.sh`
 
 3. Read the code coverage report:  
-`src/DotnetWebhookGH.Tests/coverage/report/summary.html`
+`src/DotnetWebhookGH.Tests/coverage/report/index.html`
 
 ### How to debug:
 
@@ -44,14 +44,14 @@ Have fun!
 
 It's important you have some knowledge about these AWS services:
 [CloudFormation](https://aws.amazon.com/cloudformation/),
-[DynamoDB](https://aws.amazon.com/dynamodb/),
+[RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/),
 [API Gateway](https://aws.amazon.com/api-gateway/),
 [Lambda](https://aws.amazon.com/lambda/).
 
 1. You need an [AWS account](https://aws.amazon.com/account/) and
 the [AWS CLI](https://aws.amazon.com/cli/) installed and configured on your computer.
 
-2. Run the tool `tools/deploy-database.sh` to create the DynamoDB table.
+2. Run the tool `tools/deploy-database.sh` to create the PostgreSQL database.
 
 3. Run the tool `tools/deploy-api.sh` to deploy the API.
 
@@ -63,27 +63,10 @@ the [AWS CLI](https://aws.amazon.com/cli/) installed and configured on your comp
 
 _[click on the image to enlarge]_
 
-## Data modeling - DynamoDB
+## Data modeling - PostgreSQL
 
-Table: dotnet-webook-gh
+<a href="https://raw.githubusercontent.com/marxjmoura/dotnet-webhook-gh/main/diagrams/der.svg">
+  <img src="https://raw.githubusercontent.com/marxjmoura/dotnet-webhook-gh/main/diagrams/der.svg" alt="DER" width="320">
+</a>
 
-<table>
-  <tr>
-    <th>Partition Key</th>
-    <th>Sort Key</th>
-    <th>Attributes</th>
-  <tr>
-  <tr>
-    <td>{repo_full_name}/issues</td>
-    <td>#{issue_number} {updated_at} {delivery}</td>
-    <td>
-     {
-        PK,
-        SK,
-        <a href="https://docs.github.com/developers/webhooks-and-events/webhooks/webhook-events-and-payloads#issues">
-          payload
-        </a>
-      }
-    </td>
-  </tr>
-</table>
+_[click on the image to enlarge]_
